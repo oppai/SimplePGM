@@ -1,0 +1,105 @@
+/*
+	PGM I/O ライブラリ 2009/07/26　進藤こだま(@kodam)
+*/
+
+・概要
+　PGMファイルを限定とした、読み書きのできるライブラリです。
+まだ、PGM(P5)しか対応してないですが、そのうちPPMとかも対応させたいと思います。
+（でも、PPMするくらいなら、BMPあるし…）
+
+・入ってるもの
+	readme.txt　説明書。リファレンスも入れてある。ヘッダに書いてあることだけどｗ
+	pgm.c	　ライブラリのソースです。自由に使ってください。
+	pgm.h	　ファイルの先頭にインクルードしてください
+
+	pgm.lib	　静的ライブラリ。bccで作ったものなので、gcc非対応かも。
+	libpgm.a	　静的ライブラリ。gccで作ったものです。
+	main.c	　サンプルプログラムです。
+	LENNA.pgm サンプルPGMです。(SIDBAから http://www.ess.ic.kanagawa-it.ac.jp/app_images_j.html)
+
+・コンパイル
+　BCCの場合
+　　$ bcc mian.c
+
+　gccの場合
+　　$ gcc -o main.out mian.c libpgm.a
+
+・履歴
+ 2012/06/10　リファレンス修正、UTF8に対応
+ 2009/08/02　一部のバグ、リファレンスの修正
+
+・リファレンス
+
+
+////////////////////////////////////////////
+//	プロトタイプ宣言
+//
+/*
+	PGM領域確保
+
+	@return: 引数で指定した大きさのPGMポインタ
+	x:横幅
+	y:縦幅
+	max:最大光度
+	type:ファイルタイプ
+*/
+PGMFILE *createPGM(int x,int y,int max,int type);
+
+
+/*
+	PGMファイル読み込み
+
+	@return: 正常なら0それ以外はエラーコード
+	fname:ファイルネーム
+	pgm:PGMファイルポインタ
+
+*/
+int readPGMfile(char* fname,PGMFILE **pgm);
+
+
+/*
+	データ補正
+
+	@return: 規定外の値だった場合MAXもしくは0にする
+	dat:データ値
+	max:マックスのデータ値
+*/
+BYTE correctValue(BYTE dat,BYTE max);
+
+
+/*
+	データのセット
+
+	pgm:PGMファイルポインタ
+	x,y:座標
+	dat:データ値
+*/
+int setPixData(PGMFILE *pgm,int x,int y,BYTE dat);
+
+
+/*
+	データの取得
+
+	@return: 画素(x,y)の輝度値
+	pgm:PGMファイルポインタ
+	x,y:座標
+*/
+BYTE getPixData(PGMFILE *pgm,int x,int y);
+
+
+/*
+	PGMファイル書き込み
+
+	@return: 正常なら0それ以外はエラーコード
+	fname;ファイルネーム
+	pgm:PGMファイルポインタ
+*/
+int writePGMfile(char* fname,PGMFILE *pgm);
+
+
+/*
+	PGMファイルメモリ開放
+
+	pgm:PGMファイルポインタ
+*/
+void freePGM(PGMFILE *pgm);

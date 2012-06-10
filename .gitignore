@@ -1,7 +1,1 @@
-Makefile
-*.c
-*.h
-*.a
-*.lib
-LENNA.pgm
-REFERENCE.txt
+out.pgm
